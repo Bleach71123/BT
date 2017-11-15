@@ -43,6 +43,15 @@ var ballY = 0;
 
         //Add drwing logic below here ------------------------------------------------------- Add drwing logic below here
 
+
+        for (var i = 0; i < data.food.length; i++) {
+                ctx.beginPath();
+                ctx.fillStyle ="#fff400";
+                ctx.arc(data.food[i].x - (ballX + gridX) + canvas.width / 2, data.food[i].y - (ballY + gridY) + canvas.height / 2, 5, 0, Math.PI * 2);
+                ctx.closePath();
+                ctx.fill(); 
+        }
+
         for (var i = 0; i < data.balls.length; i++) {
             if (data.balls[i].id == id){                                                      //Draws Player
 

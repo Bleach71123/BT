@@ -12,7 +12,7 @@ const server = express()
 const io = socketIO(server);
 
 //Above is creation of the server ---------------- Above is creation of the server
-
+ 
 
 function ball (x, y, xspeed, yspeed, id){
   this.moveLeft = false;
@@ -35,11 +35,18 @@ function bullet (x, y, xspeed, yspeed, id){
   this.id = id;
 }
 
+function food (x, y){
+  this.x = x;
+  this.y = y;
+}
+
 var balls = [];
 var bullets = [];
+var foods = [];
 var id = 0;
 var connections = [];
 var borderX = borderY = 10000;
+var counter = 0;
 
 
 io.on('connection', function (socket) {
@@ -152,13 +159,23 @@ function move(){
       i--;
     }
 
-    for (var i = 0; i < balls.length; i++) {
+    /*for (var i = 0; i < balls.length; i++) {
       
-    }
+    }*/
 
   }
 
-  io.sockets.emit('move', {balls: balls, bullets: bullets, borderX: borderX, borderY: borderY});
+  if (counter == 100 && food.length < 240){
+    var x = Math.floor(Math.random() * borderX);  //Sets ball position to random
+    var y = Math.floor(Math.random() * borderY);
+    var d = new food(x, y);
+    foods.push(d); 
+    counter = 0;
+  }
+  counter++;
+
+  io.sockets.emit('move', {balls: balls, bullets: bullets, food: foods, borderX: borderX, borderY: borderY});
 }
+
 
 var updateInterval = setInterval(move, 2);

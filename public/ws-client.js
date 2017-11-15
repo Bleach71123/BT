@@ -51,6 +51,15 @@ var ballY = 0;
             ctx.fill();
         }
 
+
+        for (var i = 0; i < data.food.length; i++) {
+                ctx.beginPath();
+                ctx.fillStyle ="#fff400";
+                ctx.arc(data.food[i].x - (ballX + gridX) + canvas.width / 2, data.food[i].y - (ballY + gridY) + canvas.height / 2, 5, 0, Math.PI * 2);
+                ctx.closePath();
+                ctx.fill(); 
+        }
+
         for (var i = 0; i < data.balls.length; i++) {
             if (data.balls[i].id == id){                                                      //Draws Player
 
@@ -130,7 +139,7 @@ var ballY = 0;
 $(window).click(function(event){
     var angle = Math.atan2(event.pageX - $(window).width() / 2, - (event.pageY - $(window).height() / 2)) * (180 / Math.PI);
     angle -= 90;
-    console.log(angle);
+    //console.log(angle);
     angle *= (Math.PI / 180);
     var xSpeed = Math.cos(angle)*100/60;
     var ySpeed = Math.sin(angle)*100/60;
@@ -149,10 +158,6 @@ document.addEventListener('keydown', function(event) {
     }
     if(event.keyCode == 83) {
         socket.emit('moveDown', {id: id});
-    }
-
-    if(event.keyCode == 32) {
-        socket.emit('shoot', {id: id, x: ballX, y: ballY, xSpeed: 0.5, ySpeed: 0.5});
     }
 });
 

@@ -66,6 +66,11 @@ io.on('connection', function (socket) {
     
   });
 
+  socket.on('shoot', function(data){
+    console.log("bullet { x: " + data.x + ", y: " + data.y + ", id: " + data.id + "}\n");
+    bullets.push(new bullet(data.x, data.y, data.xSpeed, data.ySpeed, data.id));
+  });
+
 
   socket.on('moveLeft', function(data){
     if (balls[data.id - 1] != null)
@@ -125,21 +130,35 @@ io.on('connection', function (socket) {
 function move(){
   for (var i = 0; i < balls.length; i++) {
     if (balls[i].moveLeft && balls[i].x - 1 > 0)
-      balls[i].x--;
+      balls[i].x -= 0.5;
     if (balls[i].moveRight && balls[i].x + 1 < borderX)
-      balls[i].x++;
+      balls[i].x += 0.5;
     if (balls[i].moveDown && balls[i].y + 1 < borderY)
-      balls[i].y++;
+      balls[i].y += 0.5;
     if (balls[i].moveUp && balls[i].y - 1 > 0)
-      balls[i].y--;
+      balls[i].y -= 0.5;
   }
 
   for (var i = 0; i < bullets.length; i++){
     bullets[i].x += bullets[i].xspeed;
     bullets[i].y += bullets[i].yspeed;
+
+    if (bullets[i].x < -25 || bullets[i].x > borderX + 25) {
+      bullets.splice(i, 1);
+      i--;
+    }
+    else if (bullets[i].y < -25 || bullets[i].y > borderY + 25) {
+      bullets.splice(i, 1);
+      i--;
+    }
+
+    for (var i = 0; i < balls.length; i++) {
+      
+    }
+
   }
 
   io.sockets.emit('move', {balls: balls, bullets: bullets, borderX: borderX, borderY: borderY});
 }
 
-var updateInterval = setInterval(move, 0);
+var updateInterval = setInterval(move, 2);

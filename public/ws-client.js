@@ -42,6 +42,14 @@ var ballY = 0;
         gridY *= 0.01;
 
         //Add drwing logic below here ------------------------------------------------------- Add drwing logic below here
+        // ----------------------------------------------------------------------------------  (- (ball(X\Y) + grid(X\Y)) + canvas.(width/height) / 2) is required to draw at correct position
+        for (var i = 0; i < data.bullets.length; i++){                                          //Draws bullets
+            ctx.beginPath();
+            ctx.fillStyle = "#ffff00";
+            ctx.arc(data.bullets[i].x - (ballX + gridX) + canvas.width / 2, data.bullets[i].y - (ballY + gridY) + canvas.height / 2, 2, 0, Math.PI * 2);
+            ctx.closePath();
+            ctx.fill();
+        }
 
         for (var i = 0; i < data.balls.length; i++) {
             if (data.balls[i].id == id){                                                      //Draws Player
@@ -119,6 +127,16 @@ var ballY = 0;
     });
 
 
+$(window).click(function(event){
+    var angle = Math.atan2(event.pageX - $(window).width() / 2, - (event.pageY - $(window).height() / 2)) * (180 / Math.PI);
+    angle -= 90;
+    console.log(angle);
+    angle *= (Math.PI / 180);
+    var xSpeed = Math.cos(angle)*100/60;
+    var ySpeed = Math.sin(angle)*100/60;
+    socket.emit('shoot', {id: id, x: ballX, y: ballY, xSpeed: xSpeed, ySpeed: ySpeed});
+});
+
 document.addEventListener('keydown', function(event) {
     if(event.keyCode == 65) {
         socket.emit('moveLeft', {id: id});
@@ -131,6 +149,10 @@ document.addEventListener('keydown', function(event) {
     }
     if(event.keyCode == 83) {
         socket.emit('moveDown', {id: id});
+    }
+
+    if(event.keyCode == 32) {
+        socket.emit('shoot', {id: id, x: ballX, y: ballY, xSpeed: 0.5, ySpeed: 0.5});
     }
 });
 

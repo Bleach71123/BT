@@ -12,7 +12,6 @@ window.addEventListener("resize", function resize(){
 
  
 var id;
-
 var ballX = 0;
 var ballY = 0; 
 
@@ -41,6 +40,8 @@ var ballY = 0;
 
         gridX *= 0.01;
         gridY *= 0.01;
+
+        //Add drwing logic below here ------------------------------------------------------- Add drwing logic below here
 
         for (var i = 0; i < data.balls.length; i++) {
             if (data.balls[i].id == id){                                                      //Draws Player
@@ -108,70 +109,43 @@ var ballY = 0;
             ctx.fill();
         }
 
-        /*ctx.beginPath();                                                                       //My attempt to draw a boundary  --WAY too laggy
-        ctx.fillStyle = "#551122";
-        ctx.rect(-10 - (ballX + gridX) + canvas.width / 2, -10 - (ballY + gridY) + canvas.height / 2, 20, 10);
-        ctx.rect(-10 - (ballX + gridX) + canvas.width / 2, -10 - (ballY + gridY) + canvas.height / 2, 10, data.borderY + 20);
-        ctx.rect(data.borderX - (ballX + gridX) + canvas.width / 2, -10 - (ballY + gridY) + canvas.height / 2, 10, data.borderY + 20);
-        ctx.rect(-10 - (ballX + gridX) + canvas.width / 2, data.borderY - (ballY + gridY) + canvas.height / 2, data.borderX + 20, 10);
-        ctx.closePath();
-        ctx.fill();*/
 
     });
+
 
     socket.on('setBallPos', function(data) {
         ballX = data.x;
         ballY = data.y;
     });
 
-//var moveLeft = moveRight = moveUp = moveDown = false;
 
 document.addEventListener('keydown', function(event) {
     if(event.keyCode == 65) {
         socket.emit('moveLeft', {id: id});
-        //moveLeft = true;
     }
     if(event.keyCode == 68) {
         socket.emit('moveRight', {id: id});
-        //moveRight = true;
     }
     if(event.keyCode == 87) {
         socket.emit('moveUp', {id: id});
-        //moveUp = true;
     }
     if(event.keyCode == 83) {
         socket.emit('moveDown', {id: id});
-        //moveDown = true;
     }
 });
 
 document.addEventListener('keyup', function(event) {
     if(event.keyCode == 65) {
         socket.emit('stopLeft', {id: id});
-        //moveLeft = false;
     }
     if(event.keyCode == 68) {
         socket.emit('stopRight', {id: id});
-        //moveRight = false;
     }
     if(event.keyCode == 87) {
         socket.emit('stopUp', {id: id});
-        //moveUp = false;
     }
     if(event.keyCode == 83) {
         socket.emit('stopDown', {id: id});
-        //moveDown = false;
     }
 });
 
-/*function move (){
-    if (moveLeft && ballX - 1 > 0)
-      ballX--;
-    if (moveRight && ballX + 1 < 1000)
-      ballX++;
-    if (moveDown && ballY + 1 < 1000)
-      ballY++;
-    if (moveUp && ballY - 1 > 0)
-      ballY--;
-    socket.emit('moved', {x: ballX, y: ballY, id: id});
-}*/

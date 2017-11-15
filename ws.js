@@ -6,11 +6,12 @@ const PORT = process.env.PORT || 80;
 const INDEX = path.join(__dirname, 'index.html');
 
 const server = express()
-  //.use((req, res) => res.sendFile(INDEX) )
   .use(express.static("public"))
   .listen(PORT, () => console.log(`Listening on ${ PORT }`));
 
 const io = socketIO(server);
+
+//Above is creation of the server ---------------- Above is creation of the server
 
 
 function ball (x, y, xspeed, yspeed, id){
@@ -40,21 +41,9 @@ var id = 0;
 var connections = [];
 var borderX = borderY = 10000;
 
-console.log("Active");
-
-function handler (req, res) {
-  fs.readFile(__dirname + '/index.html',
-  function (err, data) {
-    if (err) {
-      res.writeHead(500);
-      return res.end('Error loading index.html');
-    }
-    res.writeHead(200);
-    res.end(data);
-  });
-}
 
 io.on('connection', function (socket) {
+
   connections.push(socket);
   console.log("\nNew Connection");
 
@@ -112,13 +101,6 @@ io.on('connection', function (socket) {
       balls[data.id - 1].moveUp = false;
   });
 
-  /*socket.on('moved', function(data){
-    var index = (balls.findIndex(function(ballId){
-      return ballId == data.id;
-    }));
-    balls[index] = new ball(data.x, data.y, 1, 1, data.id);
-  });*/
-
 
   socket.on('disconnect', function(){
 
@@ -136,6 +118,7 @@ io.on('connection', function (socket) {
     id--;
   });
 
+
 });
 
 
@@ -152,10 +135,11 @@ function move(){
   }
 
   for (var i = 0; i < bullets.length; i++){
-
+    bullets[i].x += bullets[i].xspeed;
+    bullets[i].y += bullets[i].yspeed;
   }
 
-  io.sockets.emit('move', {balls: balls, borderX: borderX, borderY: borderY});
+  io.sockets.emit('move', {balls: balls, bullets: bullets, borderX: borderX, borderY: borderY});
 }
 
 var updateInterval = setInterval(move, 0);

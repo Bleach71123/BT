@@ -29,9 +29,9 @@ var ballY = 0;
         var gridX = ballX;
         var gridY = ballY;
 
-        while (gridX > 414)
+        while (gridX > 414) //414 is background image width * 2
             gridX -= 414;
-        while (gridY > 400)
+        while (gridY > 400) //400 is background image height * 2
             gridY -= 400;
 
         gridX *= -0.5;
@@ -39,6 +39,8 @@ var ballY = 0;
 
         document.getElementById('a').style.backgroundPosition = gridX + "px " + gridY + "px"; //Moves background
 
+        gridX *= 0.01;
+        gridY *= 0.01;
 
         for (var i = 0; i < data.balls.length; i++) {
             if (data.balls[i].id == id){                                                      //Draws Player
@@ -75,7 +77,38 @@ var ballY = 0;
             }
         }
 
-        /*ctx.beginPath();                                                                       //My attempt to draw a boundary
+
+        if (ballX - $(window).width()/2 <= 0 ){                                                 //Draws X left border
+            ctx.beginPath();
+            ctx.fillStyle = "#551122";
+            ctx.rect(-45 - (ballX + gridX) + canvas.width / 2, 0, 20, $(window).height());
+            ctx.closePath();
+            ctx.fill();
+        }
+        else if (ballX + $(window).width()/2 >= 10000 ){                                        //Draws X right border
+            ctx.beginPath();
+            ctx.fillStyle = "#551122";
+            ctx.rect(10025 - (ballX + gridX) + canvas.width / 2, 0, 20, $(window).height());
+            ctx.closePath();
+            ctx.fill();
+        }
+
+        if (ballY - $(window).height()/2 <= 0 ){                                                //Draws Y upper border
+            ctx.beginPath();
+            ctx.fillStyle = "#551122";
+            ctx.rect(0, -45 - (ballY + gridY) + canvas.height / 2, $(window).width(), 20);
+            ctx.closePath();
+            ctx.fill();
+        }
+        else if (ballY + $(window).height()/2 >= 10000 ){                                       //Draws Y lower border
+            ctx.beginPath();
+            ctx.fillStyle = "#551122";
+            ctx.rect(0, 10025 - (ballY + gridY) + canvas.height / 2, $(window).width(), 20);
+            ctx.closePath();
+            ctx.fill();
+        }
+
+        /*ctx.beginPath();                                                                       //My attempt to draw a boundary  --WAY too laggy
         ctx.fillStyle = "#551122";
         ctx.rect(-10 - (ballX + gridX) + canvas.width / 2, -10 - (ballY + gridY) + canvas.height / 2, 20, 10);
         ctx.rect(-10 - (ballX + gridX) + canvas.width / 2, -10 - (ballY + gridY) + canvas.height / 2, 10, data.borderY + 20);

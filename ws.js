@@ -1,13 +1,3 @@
-/*var app = require('http').createServer(handler)
-var io = require('socket.io')(app);
-var fs = require('fs');
-
-app.listen(80); */ 
- 
-//Works Locally
-//-------------------------------------------------
-//Works 
-
 const express = require('express');
 const socketIO = require('socket.io');
 const path = require('path');
@@ -23,36 +13,6 @@ const server = express()
 const io = socketIO(server);
 
 
-
-
-//-------------------------------------------------------------Express 3/4
-
-/*var app = require('express')();
-var server = require('http').Server(app);
-var io = require('socket.io')(server);
-
-server.listen(3000);
-
-app.get('/', function (req, res) {
-  res.sendfile(__dirname + '/index.html');    //Error: Listen EACCES 0.0.0.0:80
-});*/
-
-//-------------------------------------------------------------Express 2.X
-/*
-var app = require('express').createServer();  //CREATE SERVER NOT A FUNCTION
-var io = require('socket.io')(app);
-
-app.listen(80);
-
-app.get('/', function (req, res) {
-  res.sendFile(__dirname + '/index.html');
-});
-*/
-
-//----------------------------------------------------------------
-//----------------------------------------------------------------
-
-
 function ball (x, y, xspeed, yspeed, id){
   this.moveLeft = false;
   this.moveRight = false;
@@ -66,7 +26,16 @@ function ball (x, y, xspeed, yspeed, id){
   this.id = id;
 }
 
+function bullet (x, y, xspeed, yspeed, id){
+  this.x = x;
+  this.y = y;
+  this.xspeed = xspeed;
+  this.yspeed = yspeed;
+  this.id = id;
+}
+
 var balls = [];
+var bullets = [];
 var id = 0;
 var connections = [];
 var borderX = borderY = 10000;
@@ -92,7 +61,7 @@ io.on('connection', function (socket) {
   socket.emit('init', {id: connections.length});
   socket.on('init', function(data) {
 
-    var x = Math.floor(Math.random() * borderX);
+    var x = Math.floor(Math.random() * borderX);  //Sets ball position to random
     var y = Math.floor(Math.random() * borderY);
     var b = new ball(x, y, 1, 1, data.id);
     balls.push(b);                          //Adds new ball to array of balls
@@ -170,7 +139,7 @@ io.on('connection', function (socket) {
 });
 
 
-function moveBall(){
+function move(){
   for (var i = 0; i < balls.length; i++) {
     if (balls[i].moveLeft && balls[i].x - 1 > 0)
       balls[i].x--;
@@ -180,9 +149,13 @@ function moveBall(){
       balls[i].y++;
     if (balls[i].moveUp && balls[i].y - 1 > 0)
       balls[i].y--;
-    }
+  }
+
+  for (var i = 0; i < bullets.length; i++){
+
+  }
 
   io.sockets.emit('move', {balls: balls, borderX: borderX, borderY: borderY});
 }
 
-var updateInterval = setInterval(moveBall, 0);
+var updateInterval = setInterval(move, 0);

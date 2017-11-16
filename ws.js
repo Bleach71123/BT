@@ -1,3 +1,4 @@
+#!/usr/bin/env nodejs
 const express = require('express');
 const socketIO = require('socket.io');
 const path = require('path');
@@ -79,7 +80,7 @@ io.on('connection', function (socket) {
   });
 
   socket.on('shoot', function(data){
-    console.log("bullet { x: " + data.x + ", y: " + data.y + ", id: " + data.id + "}\n");
+    //console.log("bullet { x: " + data.x + ", y: " + data.y + ", id: " + data.id + "}\n");
     bullets.push(new bullet(data.x, data.y, data.xSpeed, data.ySpeed, data.id));
   });
 

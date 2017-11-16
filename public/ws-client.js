@@ -88,7 +88,7 @@ var moveLeft = moveRight = moveDown = moveUp = false;
                 ctx.closePath();
                 ctx.fill();
 
-                ctx.beginPath();
+                ctx.beginPath();                                                                //Draws Health Bar
                 ctx.fillStyle = "#FFFFFF";
                 ctx.font="15px Verdana";
                 ctx.fillText("HP:", $(window).width() / 2 - 80, 25);
@@ -97,12 +97,12 @@ var moveLeft = moveRight = moveDown = moveUp = false;
 
                 ctx.beginPath();
                 ctx.fillStyle = "#BBFFBB";
-                ctx.rect($(window).width() / 2 - 50, 10, data.balls[i].health, 20)
+                ctx.rect($(window).width() / 2 - 50, 10, data.balls[i].health * 2, 20)
                 ctx.closePath();
                 ctx.fill();
                 ctx.beginPath();
                 ctx.fillStyle = "#ABABAB";
-                ctx.rect($(window).width() / 2 - 50 + data.balls[i].health, 10, 100 - data.balls[i].health, 20);
+                ctx.rect(($(window).width() / 2 - 100 + data.balls[i].health) * 2, 10, (100 - data.balls[i].health) * 2, 20);
                 ctx.closePath();
                 ctx.fill();
 

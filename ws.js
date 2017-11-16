@@ -1,5 +1,5 @@
 #!/usr/bin/env nodejs
-var app = require('http').createServer(handler).listen(process.env.PORT || 80, 138.197.0.141);
+var app = require('http').createServer(handler).listen(process.env.PORT || 80);
 var io = require('socket.io')(app);
 var fs = require('fs');
  

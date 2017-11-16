@@ -26,6 +26,8 @@ function ball (x, y, xspeed, yspeed, id){
   this.yspeed = yspeed;
   this.id = id;
   this.score = 10;
+  this.health = 100;
+  this.maxHealth = 100;
 }
 
 function bullet (x, y, xspeed, yspeed, id){
@@ -139,6 +141,8 @@ io.on('connection', function (socket) {
 
 function move(){
   for (var i = 0; i < balls.length; i++) {
+    if (balls[i].health < balls[i].maxHealth)
+      balls[i].health += 0.01;
     if (balls[i].moveLeft && balls[i].x - 1 > 0)
       balls[i].x -= 0.8;
     if (balls[i].moveRight && balls[i].x + 1 < borderX)
@@ -170,7 +174,7 @@ function move(){
               if (Math.sqrt(Math.pow(bullets[i].x - balls[c].x, 2) + Math.pow(bullets[i].y - balls[c].y, 2)) < 25){   //Bullet collision logic
                 bullets.splice(i, 1);
                 i--;
-                balls[c].score += 5;
+                balls[c].health -= 10;
               }
             }
           }
@@ -195,7 +199,7 @@ function move(){
   }
 
   if (counter == 100 && food.length < 45){
-    var x = Math.floor(Math.random() * borderX);  //Sets ball position to random
+    var x = Math.floor(Math.random() * borderX);  //Sets food position to random
     var y = Math.floor(Math.random() * borderY);
     var d = new food(x, y);
     foods.push(d); 

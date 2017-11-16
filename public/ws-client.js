@@ -88,6 +88,24 @@ var moveLeft = moveRight = moveDown = moveUp = false;
                 ctx.closePath();
                 ctx.fill();
 
+                ctx.beginPath();
+                ctx.fillStyle = "#FFFFFF";
+                ctx.font="15px Verdana";
+                ctx.fillText("HP:", $(window).width() / 2 - 80, 25);
+                ctx.closePath();
+                ctx.fill();
+
+                ctx.beginPath();
+                ctx.fillStyle = "#BBFFBB";
+                ctx.rect($(window).width() / 2 - 50, 10, data.balls[i].health, 20)
+                ctx.closePath();
+                ctx.fill();
+                ctx.beginPath();
+                ctx.fillStyle = "#ABABAB";
+                ctx.rect($(window).width() / 2 - 50 + data.balls[i].health, 10, 100 - data.balls[i].health, 20);
+                ctx.closePath();
+                ctx.fill();
+
                 ballX = data.balls[i].x;
                 ballY = data.balls[i].y;
             }

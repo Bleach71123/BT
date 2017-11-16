@@ -25,6 +25,7 @@ function ball (x, y, xspeed, yspeed, id){
   this.xspeed = xspeed;
   this.yspeed = yspeed;
   this.id = id;
+  this.score = 10;
 }
 
 function bullet (x, y, xspeed, yspeed, id){
@@ -137,13 +138,13 @@ io.on('connection', function (socket) {
 function move(){
   for (var i = 0; i < balls.length; i++) {
     if (balls[i].moveLeft && balls[i].x - 1 > 0)
-      balls[i].x -= 0.5;
+      balls[i].x -= 0.8;
     if (balls[i].moveRight && balls[i].x + 1 < borderX)
-      balls[i].x += 0.5;
+      balls[i].x += 0.8;
     if (balls[i].moveDown && balls[i].y + 1 < borderY)
-      balls[i].y += 0.5;
+      balls[i].y += 0.8;
     if (balls[i].moveUp && balls[i].y - 1 > 0)
-      balls[i].y -= 0.5;
+      balls[i].y -= 0.8;
   }
 
   for (var i = 0; i < bullets.length; i++){
@@ -159,13 +160,39 @@ function move(){
       i--;
     }
 
-    /*for (var i = 0; i < balls.length; i++) {
-      
-    }*/
+    for (var c = 0; c < balls.length; c++) {
+      if (bullets[i] != null){
+        if (bullets[i].id != balls[c].id){
+          if (Math.abs(bullets[i].x - balls[c].x) <= 25){
+            if (Math.abs(bullets[i].y - balls[c].y) <= 25){
+              if (Math.sqrt(Math.pow(bullets[i].x - balls[c].x, 2) + Math.pow(bullets[i].y - balls[c].y, 2)) < 25){   //Bullet collision logic
+                bullets.splice(i, 1);
+                i--;
+                balls[c].score += 5;
+              }
+            }
+          }
+        }
+      }
+    }
 
   }
 
-  if (counter == 100 && food.length < 240){
+  for (var i = 0; i < foods.length; i++) {
+    for (var c = 0; c < balls.length; c++) {
+      if (Math.abs(foods[i].x - balls[c].x) <= 25){
+        if (Math.abs(foods[i].y - balls[c].y) <= 25){
+          if (Math.sqrt(Math.pow(foods[i].x - balls[c].x, 2) + Math.pow(foods[i].y - balls[c].y, 2)) < 25){  //Food eating logic
+            foods.splice(i, 1);
+            i--;
+            balls[c].score += 5;
+          }
+        }
+      }
+    }
+  }
+
+  if (counter == 100 && food.length < 100){
     var x = Math.floor(Math.random() * borderX);  //Sets ball position to random
     var y = Math.floor(Math.random() * borderY);
     var d = new food(x, y);

@@ -1,4 +1,21 @@
 #!/usr/bin/env nodejs
+var app = require('http').createServer(handler).listen(process.env.PORT || 80, 138.197.0.141);
+var io = require('socket.io')(app);
+var fs = require('fs');
+ 
+function handler (req, res) {
+  fs.readFile(__dirname + 'public/index.html',
+  function (err, data) {
+    if (err) {
+      res.writeHead(500);
+      return res.end('Error loading index.html');
+    }
+    res.writeHead(200);
+    res.end(data);
+  });
+}
+
+/*
 const express = require('express');
 const socketIO = require('socket.io');
 const path = require('path');
@@ -11,7 +28,7 @@ const server = express()
   .listen(PORT, () => console.log(`Listening on ${ PORT }`));
 
 const io = socketIO(server);
-
+*/
 //Above is creation of the server ---------------- Above is creation of the server
  
 

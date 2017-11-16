@@ -54,8 +54,10 @@ io.on('connection', function (socket) {
 
   connections.push(socket);
   console.log("\nNew Connection");
-
-  socket.emit('init', {id: connections.length});
+  
+  socket.on('play', function(){
+    socket.emit('init', {id: connections.length});
+  });
   socket.on('init', function(data) {
 
     var x = Math.floor(Math.random() * borderX);  //Sets ball position to random
@@ -192,7 +194,7 @@ function move(){
     }
   }
 
-  if (counter == 100 && food.length < 100){
+  if (counter == 100 && food.length < 45){
     var x = Math.floor(Math.random() * borderX);  //Sets ball position to random
     var y = Math.floor(Math.random() * borderY);
     var d = new food(x, y);

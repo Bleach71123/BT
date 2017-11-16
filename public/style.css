@@ -3,46 +3,26 @@ body {
     color: #EEAA00;
     font-family: verdana;
 }
-  
-body input,
-body label {
-    display: block;  
-}
 
 h1 {
     text-align: center;
 }
 
-
-input {
-    outline: none;
-    border: none;
-    background-color: black;
-    color: #0F0;
-    padding: 1em .5em;
+p {
     display: block;
-    font-size: 1.5em;
-    -webkit-box-flex: 1;
-    -webkit-flex-grow: 1;
-    -ms-flex-positive: 1;
-    flex-grow: 1;
-}
- 
-label {
-    display: block;
-    padding: 1em .5em;
-    font-size: 1.5em;
+    background-color: #FFFFFF;
+    border-radius: 10px;
+    padding: 10px;
+    width: 100px;
 }
 
-div.messages {
-    margin-left: 1em;
+p:active{
+    background-color: #EEEEEE;
 }
 
-form {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
+*::selection {
+    background:none;
+    color: #EEAA00;
 }
 
 canvas{
@@ -62,6 +42,8 @@ canvas{
     top: 0;
     width: 100%;
     height: 100%;
+
+    z-index: -1;
 }
 
 @keyframes bg{
